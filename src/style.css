@@ -1,0 +1,30 @@
+:root {
+  --primary: #f00;
+  --secondary: #200;
+  --background: #eee;
+
+  font-family: sans-serif;
+  background-color: var(--background);
+  color: var(--primary);
+}
+canvas#canvas {
+  display: block;
+  margin: 1em auto;
+}
+header {
+  font-size: 2em;
+  text-align: center;
+}
+div.subheader {
+  font-size: 1.5em;
+  color: var(--secondary);
+  text-align: center;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary: #f00;
+    --secondary: #fee;
+    --background: #222;
+  }
+
+}
