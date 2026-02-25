@@ -1,5 +1,5 @@
 import Line from "./line.ts";
-import Util from "./util.ts";
+import * as Util from "./util.ts";
 
 export default class StatefulLine {
     width: number;
@@ -23,17 +23,17 @@ export default class StatefulLine {
         this.bottomShift = shift * Util.random_choice(1, -1);
     }
     randomLine = (width: number, height: number): Line => {
-        let left = Util.random_range(10.0, width - 10);
-        let top = Util.random_range(10.0, height - 10);
-        let right = Util.random_range(10, width - 10);
-        let bottom = Util.random_range(10, height - 10);
+        const left = Util.random_range(10.0, width - 10);
+        const top = Util.random_range(10.0, height - 10);
+        const right = Util.random_range(10, width - 10);
+        const bottom = Util.random_range(10, height - 10);
 
         return new Line(left, top, right, bottom);
     }
     bounceShift = (shift: number) => {
         // When the end of a line hits the wall, it always changes the direction,
         // but sometimes the velocity is slightly reduced as well.
-        let velo = Util.random_choice(this.shift, (this.shift / 9) * 8, 4);
+        const velo = Util.random_choice(this.shift, (this.shift / 9) * 8, 4);
         return shift > 0 ? velo * -1 : velo;
     }
     shiftLine = () => {

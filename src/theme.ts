@@ -1,9 +1,9 @@
 export default class Theme {
     static DARK_MODE_BACKGROUND = "#2A1111";
-    static DARK_MODE_BORDER = "#FF0000";
+    static DARK_MODE_BORDER = "#440000";
     static DARK_MODE_LINE = "#EE4422";
 
-    static LIGHT_MODE_BACKGROUND = "#FFFEFE";
+    static LIGHT_MODE_BACKGROUND = "#2a1111";
     static LIGHT_MODE_BORDER = "#FF0000";
     static LIGHT_MODE_LINE = "#BB0000";
 

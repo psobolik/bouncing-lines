@@ -1,5 +1,5 @@
 import './style.css'
-import Background from "./background.ts";
+import * as Background from "./background.ts";
 import Line from "./line.ts";
 import StatefulLine from "./stateful-line.ts";
 import Theme from "./theme.ts";
@@ -40,7 +40,7 @@ document.addEventListener("keyup", (e) => {
             break;
     }
 })
-var btnIntervalId: number = 0;
+let btnIntervalId = 0;
 const endBtnRepeat = () => {
     if (btnIntervalId > 0) {
         clearInterval(btnIntervalId);
@@ -48,7 +48,7 @@ const endBtnRepeat = () => {
     }
 }
 const upBtn = document.getElementById("upBtn") as HTMLButtonElement;
-upBtn.addEventListener("mousedown", (_e) => {
+upBtn.addEventListener("mousedown", () => {
     endBtnRepeat()
     bumpLineCount(1);
     btnIntervalId = setInterval(() => bumpLineCount(1), REPEAT_INTERVAL);
@@ -57,7 +57,7 @@ upBtn.addEventListener("mouseup", endBtnRepeat)
 upBtn.addEventListener("mouseleave", endBtnRepeat)
 
 const dnBtn = document.getElementById("dnBtn") as HTMLButtonElement;
-dnBtn.addEventListener("mousedown", (_e) => {
+dnBtn.addEventListener("mousedown", () => {
     endBtnRepeat()
     bumpLineCount(-1)
     btnIntervalId = setInterval(() => bumpLineCount(-1), REPEAT_INTERVAL);

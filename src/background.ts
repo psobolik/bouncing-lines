@@ -1,24 +1,12 @@
 import Theme from "./theme.ts";
 
-export default class Background {
-    static BORDER_SIZE = 10;
+export const draw = (ctx: CanvasRenderingContext2D, theme: Theme)=> {
+    ctx.save();
 
-    static draw(ctx: CanvasRenderingContext2D, theme: Theme) {
-        ctx.save();
+    // Fill the canvas with the background color
+    ctx.fillStyle = theme.background;
+    ctx.rect(0.0, 0.0, ctx.canvas.width, ctx.canvas.height);
+    ctx.fill();
 
-        ctx.beginPath();
-
-        // Fill the background
-        ctx.fillStyle = theme.background;
-        ctx.rect(0.0, 0.0, ctx.canvas.width, ctx.canvas.height);
-        ctx.fill();
-
-        // Stroke the border (half the width will be off the canvas)
-        ctx.strokeStyle = theme.border;
-        ctx.lineWidth = Background.BORDER_SIZE;
-        ctx.rect(0.0, 0.0, ctx.canvas.width, ctx.canvas.height);
-        ctx.stroke();
-
-        ctx.restore();
-    }
+    ctx.restore();
 }

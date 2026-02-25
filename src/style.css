@@ -12,6 +12,7 @@ body {
   text-align: center;
 }
 canvas#canvas {
+  border: 5px solid var(--highlight);
   margin-top: 1em;
 }
 header {
