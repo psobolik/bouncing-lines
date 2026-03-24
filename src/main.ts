@@ -6,6 +6,7 @@ import Theme from "./theme.ts";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+const footer = document.getElementById("lineCount") as HTMLElement;
 
 const REPEAT_INTERVAL = 300;
 const INITIAL_LINE_COUNT = 50;
@@ -13,12 +14,18 @@ const LINE_WIDTH = 1.5;
 const lines: Line[] = [];
 const SHIFT = 10;
 
+const MARGIN = 50;
+const HEADER = document.querySelector<HTMLElement>('header');
+const TOP_MARGIN = HEADER ? HEADER.clientHeight : 0;
+const FOOTER = document.querySelector<HTMLElement>('footer');
+const BOTTOM_MARGIN = FOOTER ? FOOTER.clientHeight : 0;
+
 let lineCount = INITIAL_LINE_COUNT;
 const bumpLineCount = (count: number) => {
-    if (lineCount + count > 0)
+    if (lineCount + count > 0) {
         lineCount += count;
-    const footer = document.getElementById("lineCount") as HTMLElement;
-    footer.innerText = `${lineCount}`;
+        footer.innerText = `${lineCount}`;
+    }
 }
 
 document.addEventListener("keydown", (e) => {
@@ -69,14 +76,7 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', eve
     theme = event.matches ? Theme.dark() : Theme.light();
 });
 
-let theme: Theme =
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? Theme.dark()
-    : Theme.light();
-
-bumpLineCount(0); // Initialize UI
-
-const statefulLine = new StatefulLine(canvas.width, canvas.height, SHIFT);
+let statefulLine = new StatefulLine(canvas.width, canvas.height, SHIFT);
 const draw = () => {
     lines.push(statefulLine.line);
     Background.draw(context, theme);
@@ -89,4 +89,20 @@ const draw = () => {
     }
     statefulLine.shiftLine();
 }
+const resize = () => {
+    const canvasWidth = window.innerWidth - MARGIN;
+    const canvasHeight = window.innerHeight - TOP_MARGIN - BOTTOM_MARGIN - MARGIN;
+    context.canvas.width = canvasWidth;
+    context.canvas.height = canvasHeight;
+    statefulLine = new StatefulLine(canvasWidth, canvasHeight, SHIFT);
+    lines.length = 0;
+}
+
+let theme: Theme =
+  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? Theme.dark()
+    : Theme.light();
+bumpLineCount(0); // Initialize UI
+resize();
+window.addEventListener("resize", resize);
 setInterval(draw, 25);

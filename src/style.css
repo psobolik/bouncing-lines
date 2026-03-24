@@ -3,6 +3,7 @@
   --secondary: #200;
   --background: #fffffd;
   --highlight: #ff000044;
+  --link: #0000f5;
 
   font-family: sans-serif;
   background-color: var(--background);
@@ -20,11 +21,13 @@ header {
 }
 footer {
   font-size: 0.75em;
-  width: 800px;
   margin: auto;
 }
+a {
+  color: var(--link);
+}
 div.subheader {
-  font-size: 1.5em;
+  font-size: 0.75em;
   color: var(--secondary);
 }
 button {
@@ -44,5 +47,6 @@ button {
     --secondary: #fee;
     --background: #222;
     --highlight: #ff000044;
+    --link: #d0d0f5;
   }
 }

@@ -31,10 +31,12 @@ export default class StatefulLine {
         return new Line(left, top, right, bottom);
     }
     bounceShift = (shift: number) => {
-        // When the end of a line hits the wall, it always changes the direction,
-        // but sometimes the velocity is slightly reduced as well.
-        const velo = Util.random_choice(this.shift, (this.shift / 9) * 8, 4);
-        return shift > 0 ? velo * -1 : velo;
+        // When the end of a line hits the wall, it always changes direction,
+        // but sometimes the velocity is slightly changed as well.
+        const fraction = 10;
+        const fractions = this.shift / fraction;
+        const velo = Util.random_choice_3(this.shift, fractions * (fraction + 1), fractions * (fraction - 1), 6);
+        return shift > 0 ? -velo : velo;
     }
     shiftLine = () => {
         let left = this.line.left + this.leftShift;

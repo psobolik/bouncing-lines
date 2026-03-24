@@ -3,8 +3,8 @@ export default class Theme {
     static DARK_MODE_BORDER = "#440000";
     static DARK_MODE_LINE = "#EE4422";
 
-    static LIGHT_MODE_BACKGROUND = "#2a1111";
-    static LIGHT_MODE_BORDER = "#FF0000";
+    static LIGHT_MODE_BACKGROUND = "#FFF";
+    static LIGHT_MODE_BORDER = "#880000";
     static LIGHT_MODE_LINE = "#BB0000";
 
     background: string;
