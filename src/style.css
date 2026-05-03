@@ -1,9 +1,9 @@
 :root {
-  --primary: #f00;
-  --secondary: #200;
-  --background: #fffffd;
+  --primary: #ff4b4b;
+  --secondary: #fee;
+  --background: #222;
   --highlight: #ff000044;
-  --link: #0000f5;
+  --link: #d0d0f5;
 
   font-family: sans-serif;
   background-color: var(--background);
@@ -20,7 +20,7 @@ header {
   font-size: 2em;
 }
 footer {
-  font-size: 0.75em;
+  /*font-size: 0.75em;*/
   margin: auto;
 }
 a {
@@ -38,15 +38,5 @@ button {
   &:hover {
     background-color: var(--highlight);
     cursor: pointer;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --primary: #f00;
-    --secondary: #fee;
-    --background: #222;
-    --highlight: #ff000044;
-    --link: #d0d0f5;
   }
 }

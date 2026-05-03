@@ -10,10 +10,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "eslint": "^10.0.2",
+    "eslint": "^10.3.0",
     "typescript": "~5.8.3",
-    "typescript-eslint": "^8.56.1",
-    "vite": "^6.4.1"
+    "typescript-eslint": "^8.59.1",
+    "vite": "8.0.5"
   },
-  "packageManager": "pnpm@10.11.1+sha512.e519b9f7639869dc8d5c3c5dfef73b3f091094b0a006d7317353c72b124e80e1afd429732e28705ad6bfa1ee879c1fce46c128ccebd3192101f43dd67c667912"
+  "packageManager": "pnpm@10.33.2"
 }

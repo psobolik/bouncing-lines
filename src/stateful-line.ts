@@ -1,5 +1,5 @@
 import Line from "./line.ts";
-import * as Util from "./util.ts";
+import * as RandomUtil from "./random_util.ts";
 
 export default class StatefulLine {
     width: number;
@@ -12,31 +12,23 @@ export default class StatefulLine {
     rightShift: number;
     bottomShift: number;
 
-    constructor(width: number, height: number, shift: number) {
-        this.line = this.randomLine(width, height);
+    constructor(width: number, height: number, shift: number, color: string) {
+        this.line = Line.random(width, height, shift, color);
         this.width = width;
         this.height = height;
         this.shift = shift;
-        this.leftShift = shift * Util.random_choice(1, -1);
-        this.topShift = shift * Util.random_choice(1, -1);
-        this.rightShift = shift * Util.random_choice(1, -1);
-        this.bottomShift = shift * Util.random_choice(1, -1);
-    }
-    randomLine = (width: number, height: number): Line => {
-        const left = Util.random_range(10.0, width - 10);
-        const top = Util.random_range(10.0, height - 10);
-        const right = Util.random_range(10, width - 10);
-        const bottom = Util.random_range(10, height - 10);
-
-        return new Line(left, top, right, bottom);
+        this.leftShift = shift * RandomUtil.random_choice(1, -1);
+        this.topShift = shift * RandomUtil.random_choice(1, -1);
+        this.rightShift = shift * RandomUtil.random_choice(1, -1);
+        this.bottomShift = shift * RandomUtil.random_choice(1, -1);
     }
     bounceShift = (shift: number) => {
         // When the end of a line hits the wall, it always changes direction,
         // but sometimes the velocity is slightly changed as well.
         const fraction = 10;
         const fractions = this.shift / fraction;
-        const velo = Util.random_choice_3(this.shift, fractions * (fraction + 1), fractions * (fraction - 1), 6);
-        return shift > 0 ? -velo : velo;
+        const velocity = RandomUtil.random_choice_3(this.shift, fractions * (fraction + 1), fractions * (fraction - 1), 6);
+        return shift > 0 ? -velocity : velocity;
     }
     shiftLine = () => {
         let left = this.line.left + this.leftShift;
@@ -72,6 +64,6 @@ export default class StatefulLine {
             bottom = this.height;
             this.bottomShift = this.bounceShift(this.bottomShift);
         }
-        this.line = new Line(left, top, right, bottom);
+        this.line = new Line(left, top, right, bottom, this.line.color);
     }
 }

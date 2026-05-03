@@ -1,30 +1,31 @@
 import './style.css'
 import * as Background from "./background.ts";
 import Line from "./line.ts";
+import * as RandomUtil from "./random_util.ts";
 import StatefulLine from "./stateful-line.ts";
-import Theme from "./theme.ts";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-const footer = document.getElementById("lineCount") as HTMLElement;
+const lineCountDisplay = document.getElementById("lineCount") as HTMLElement;
 
 const REPEAT_INTERVAL = 300;
 const INITIAL_LINE_COUNT = 50;
-const LINE_WIDTH = 1.5;
 const lines: Line[] = [];
-const SHIFT = 10;
+let shift = 10;
 
+const elHeight = (selector: string): number => {
+    const el = document.querySelector(selector);
+    return el ? el.clientHeight : 0;
+}
 const MARGIN = 50;
-const HEADER = document.querySelector<HTMLElement>('header');
-const TOP_MARGIN = HEADER ? HEADER.clientHeight : 0;
-const FOOTER = document.querySelector<HTMLElement>('footer');
-const BOTTOM_MARGIN = FOOTER ? FOOTER.clientHeight : 0;
+const TOP_MARGIN = elHeight('header');
+const BOTTOM_MARGIN = elHeight('footer');
 
 let lineCount = INITIAL_LINE_COUNT;
 const bumpLineCount = (count: number) => {
     if (lineCount + count > 0) {
         lineCount += count;
-        footer.innerText = `${lineCount}`;
+        lineCountDisplay.innerText = `${lineCount}`;
     }
 }
 
@@ -38,7 +39,6 @@ document.addEventListener("keydown", (e) => {
             break;
     }
 })
-
 document.addEventListener("keyup", (e) => {
     switch (e.key) {
         case "ArrowUp":
@@ -47,6 +47,7 @@ document.addEventListener("keyup", (e) => {
             break;
     }
 })
+
 let btnIntervalId = 0;
 const endBtnRepeat = () => {
     if (btnIntervalId > 0) {
@@ -72,36 +73,62 @@ dnBtn.addEventListener("mousedown", () => {
 dnBtn.addEventListener("mouseup", endBtnRepeat)
 dnBtn.addEventListener("mouseleave", endBtnRepeat)
 
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-    theme = event.matches ? Theme.dark() : Theme.light();
-});
+const LINE_COLORS = [
+    "#FF0000",
+    "#FFCCCC",
+    "#4444FF",
+    "#44AAFF",
+    "#00FF00",
+    "#CCFFCC",
+    "#FFFF00",
+    "#FFFFCC",
+    "#00FFFF",
+    "#CCFFFF",
+    "#FF00FF",
+    "#FF77FF",
+    "#555577",
+    "#CCCCFF",
+    "#FFFFFF",
+];
+let lineColorIndex = 0; // Index of the current line color
+let colorCount = 0; // Count of how many times the current line color has been used
 
-let statefulLine = new StatefulLine(canvas.width, canvas.height, SHIFT);
+const currentLineColor = () => LINE_COLORS[lineColorIndex];
+const randomizeLineIndex = () => lineColorIndex = Math.floor(RandomUtil.random_range(0, LINE_COLORS.length));
+const randomizeShift = () => shift = RandomUtil.random_range(3, 10) * 2;
+const maxColorCount = () => lineCount * 4;
+const newStatefullLine = () => new StatefulLine(canvas.width, canvas.height, shift, currentLineColor());
+
+let statefulLine = newStatefullLine();
 const draw = () => {
-    lines.push(statefulLine.line);
-    Background.draw(context, theme);
-    for (let i = 0; i < lines.length; i++) {
-        lines[i].draw(context, theme, LINE_WIDTH, i / lineCount);
-    }
+    const BACKGROUND_COLOR = "#2A2626";
+
     if (lines.length > lineCount) {
         do lines.shift();
         while (lines.length < lineCount);
+
+        if (++colorCount % maxColorCount() === 0) {
+            colorCount = 0;
+            randomizeShift();
+            randomizeLineIndex();
+        }
+        statefulLine.line.color = currentLineColor();
+        statefulLine.shift = shift;
+    }
+    lines.push(statefulLine.line);
+    Background.draw(context, BACKGROUND_COLOR);
+    for (let i = 0; i < lines.length; i++) {
+        lines[i].draw(context, i / lineCount);
     }
     statefulLine.shiftLine();
 }
 const resize = () => {
-    const canvasWidth = window.innerWidth - MARGIN;
-    const canvasHeight = window.innerHeight - TOP_MARGIN - BOTTOM_MARGIN - MARGIN;
-    context.canvas.width = canvasWidth;
-    context.canvas.height = canvasHeight;
-    statefulLine = new StatefulLine(canvasWidth, canvasHeight, SHIFT);
+    context.canvas.width = window.innerWidth - MARGIN;
+    context.canvas.height = window.innerHeight - TOP_MARGIN - BOTTOM_MARGIN - MARGIN;
+    statefulLine = newStatefullLine();
     lines.length = 0;
 }
 
-let theme: Theme =
-  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? Theme.dark()
-    : Theme.light();
 bumpLineCount(0); // Initialize UI
 resize();
 window.addEventListener("resize", resize);
