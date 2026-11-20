@@ -97,9 +97,9 @@ const currentLineColor = () => LINE_COLORS[lineColorIndex];
 const randomizeLineIndex = () => lineColorIndex = Math.floor(RandomUtil.random_range(0, LINE_COLORS.length));
 const randomizeShift = () => shift = RandomUtil.random_range(3, 10) * 2;
 const maxColorCount = () => lineCount * 4;
-const newStatefullLine = () => new StatefulLine(canvas.width, canvas.height, shift, currentLineColor());
+const newStatefulLine = () => new StatefulLine(canvas.width, canvas.height, shift, currentLineColor());
 
-let statefulLine = newStatefullLine();
+let statefulLine = newStatefulLine();
 const draw = () => {
     const BACKGROUND_COLOR = "#2A2626";
 
@@ -117,7 +117,7 @@ const draw = () => {
     }
     lines.push(statefulLine.line);
     Background.draw(context, BACKGROUND_COLOR);
-    for (let i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; ++i) {
         lines[i].draw(context, i / lineCount);
     }
     statefulLine.shiftLine();
@@ -125,7 +125,7 @@ const draw = () => {
 const resize = () => {
     context.canvas.width = window.innerWidth - MARGIN;
     context.canvas.height = window.innerHeight - TOP_MARGIN - BOTTOM_MARGIN - MARGIN;
-    statefulLine = newStatefullLine();
+    statefulLine = newStatefulLine();
     lines.length = 0;
 }
 

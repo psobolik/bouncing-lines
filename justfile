@@ -5,6 +5,9 @@ remote-dir := '/home/padeso/public_html' / project
 base-dir := '/~padeso' / project
 build-dir := './dist' / remote-server
 
+default:
+    just --list
+
 # Serve the site locally
 dev: 
     pnpm run dev --open
@@ -27,3 +30,7 @@ deploy: build
 # Delete the output files
 clean:
     rm -r "{{ build-dir }}"
+
+# Run eslint on the typescript files
+lint:
+    pnpm lint
